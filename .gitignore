@@ -1,0 +1,14 @@
+# Python environment
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Local secret configurations (to prevent leak in source code distribution)
+flag.txt
+admin_creds.txt
+.env
+.env.*
+
+# Binaries
+*.deb

@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal TETI UGM - Login</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #070a13;
+            --card-bg: rgba(13, 20, 38, 0.6);
+            --card-border: rgba(255, 255, 255, 0.07);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #1e40af; /* Deep UGM Blue */
+            --primary-light: #3b82f6; /* Modern Blue */
+            --accent: #f59e0b; /* UGM Yellow/Gold */
+            --accent-glow: rgba(245, 158, 11, 0.15);
+            --cyan: #06b6d4; /* Tech Cyan */
+            --input-bg: rgba(10, 15, 30, 0.8);
+            --input-border: rgba(255, 255, 255, 0.08);
+            --input-focus-border: rgba(59, 130, 246, 0.6);
+            --glow-color: rgba(59, 130, 246, 0.25);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            padding: 24px;
+        }
+
+        /* Decorative Background Elements */
+        .bg-glow-1 {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(30, 64, 175, 0.2) 0%, rgba(7, 10, 19, 0) 70%);
+            top: -150px;
+            left: -150px;
+            filter: blur(80px);
+            z-index: 1;
+            animation: pulse 15s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        .bg-glow-2 {
+            position: absolute;
+            width: 700px;
+            height: 700px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, rgba(7, 10, 19, 0) 70%);
+            bottom: -200px;
+            right: -150px;
+            filter: blur(100px);
+            z-index: 1;
+            animation: pulse 20s ease-in-out infinite alternate-reverse;
+            pointer-events: none;
+        }
+
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 28px 28px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.15) translate(40px, 40px); }
+        }
+
+        /* Login Card */
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 24px;
+            padding: 48px 40px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            z-index: 10;
+            position: relative;
+            animation: cardEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Top Accent Bar */
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--primary-light) 50%, var(--cyan) 100%);
+            border-radius: 24px 24px 0 0;
+        }
+
+        @keyframes cardEntrance {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header Area */
+        .header-area {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .logo-wrapper {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .teti-logo {
+            width: 76px;
+            height: 76px;
+            filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.35));
+        }
+
+        .dashed-poly {
+            stroke-dasharray: 6;
+            animation: dashRotation 8s linear infinite;
+            transform-origin: 50px 50px;
+        }
+
+        @keyframes dashRotation {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .portal-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .portal-subtitle {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            padding: 0 10px;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            letter-spacing: 0.75px;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            width: 20px;
+            height: 20px;
+            color: var(--text-muted);
+            transition: color 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+        }
+
+        .form-input {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 12px;
+            padding: 14px 16px 14px 48px;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            font-family: inherit;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--input-focus-border);
+            background: rgba(10, 15, 30, 0.95);
+            box-shadow: 0 0 0 4px var(--glow-color);
+        }
+
+        /* Hover & Focus state shifts the icon slightly */
+        .form-input:focus ~ .input-icon {
+            color: var(--primary-light);
+            transform: scale(1.05);
+        }
+
+        .form-group:focus-within .form-label {
+            color: var(--primary-light);
+        }
+
+        /* Password Visibility Toggle */
+        .password-toggle {
+            position: absolute;
+            right: 16px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        .password-toggle:hover {
+            color: var(--text-main);
+            transform: scale(1.1);
+        }
+
+        .password-toggle:active {
+            transform: scale(0.95);
+        }
+
+        .toggle-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .password-input {
+            padding-right: 48px;
+        }
+
+        /* Action Button */
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, #1d4ed8 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 10px;
+            box-shadow: 0 4px 14px rgba(30, 64, 175, 0.4);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.45);
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Button Glow Sweep */
+        .submit-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.15),
+                transparent
+            );
+            transform: rotate(45deg);
+            transition: 0.5s;
+            opacity: 0;
+        }
+
+        .submit-btn:hover::after {
+            left: 120%;
+            opacity: 1;
+            transition: all 0.6s ease-in-out;
+        }
+
+        /* Divider & Alternates */
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 24px 0 16px 0;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .divider:not(:empty)::before {
+            margin-right: .8em;
+        }
+
+        .divider:not(:empty)::after {
+            margin-left: .8em;
+        }
+
+        /* SSO Button */
+        .sso-btn {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 12px;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .sso-btn:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.18);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .sso-icon {
+            width: 18px;
+            height: 18px;
+            color: var(--accent);
+            filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.3));
+        }
+
+        /* Card Footer links */
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 24px;
+            font-size: 0.82rem;
+        }
+
+        .footer-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--accent);
+        }
+
+        /* Form Validation styling (optional, matches standard alerts) */
+        .alert {
+            background-color: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 0.85rem;
+            color: #fca5a5;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .alert-icon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        /* Responsive Scaling */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 32px 24px;
+                border-radius: 18px;
+            }
+            .portal-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background decorative grids and lights -->
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+    <div class="bg-grid"></div>
+
+    <div class="login-container">
+        <!-- Header -->
+        <div class="header-area">
+            <div class="logo-wrapper">
+                <svg class="teti-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Outer Hexagon -->
+                    <polygon points="50,5 89,27.5 89,72.5 50,95 11,72.5 11,27.5" stroke="url(#ugm-grad)" stroke-width="4.5" stroke-linejoin="round" fill="rgba(7, 10, 19, 0.5)"/>
+                    <!-- Inner Hexagon (Dashed and Animated) -->
+                    <polygon class="dashed-poly" points="50,16 79.5,33 79.5,67 50,84 20.5,67 20.5,33" stroke="url(#tech-grad)" stroke-width="1.5" stroke-linejoin="round"/>
+                    
+                    <!-- Tech Central Node Shield -->
+                    <circle cx="50" cy="50" r="10" fill="rgba(13, 20, 38, 0.85)" stroke="var(--accent)" stroke-width="1.5"/>
+                    <circle cx="50" cy="50" r="4" fill="var(--accent)"/>
+                    
+                    <!-- Circuit Lines -->
+                    <path d="M 50 35 L 50 16" stroke="var(--text-main)" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M 50 65 L 50 84" stroke="var(--text-main)" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M 37 42.5 L 20.5 33" stroke="var(--text-main)" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M 63 57.5 L 79.5 67" stroke="var(--text-main)" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M 63 42.5 L 79.5 33" stroke="var(--text-main)" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M 37 57.5 L 20.5 67" stroke="var(--text-main)" stroke-width="2" stroke-linecap="round"/>
+                    
+                    <!-- Connection Terminal Nodes -->
+                    <circle cx="50" cy="16" r="3" fill="var(--cyan)"/>
+                    <circle cx="50" cy="84" r="3" fill="var(--cyan)"/>
+                    <circle cx="20.5" cy="33" r="3" fill="var(--accent)"/>
+                    <circle cx="79.5" cy="67" r="3" fill="var(--accent)"/>
+                    <circle cx="79.5" cy="33" r="3" fill="var(--cyan)"/>
+                    <circle cx="20.5" cy="67" r="3" fill="var(--cyan)"/>
+
+                    <defs>
+                        <linearGradient id="ugm-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="var(--accent)"/>
+                            <stop offset="100%" stop-color="var(--primary-light)"/>
+                        </linearGradient>
+                        <linearGradient id="tech-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="var(--cyan)"/>
+                            <stop offset="100%" stop-color="var(--accent)"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <h1 class="portal-title">Portal TETI</h1>
+            <p class="portal-subtitle">Departemen Teknik Elektro & Teknologi Informasi UGM</p>
+        </div>
+
+        <!-- Form -->
+        <form action="/login" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <div class="form-group">
+                <label class="form-label" for="username">Username</label>
+                <div class="input-wrapper">
+                    <input class="form-input" type="text" id="username" name="username" placeholder="Masukkan username Anda" required autocomplete="username">
+                    <!-- User Icon -->
+                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <div class="input-wrapper">
+                    <input class="form-input password-input" type="password" id="password" name="password" placeholder="Masukkan password Anda" required autocomplete="current-password">
+                    <!-- Lock Icon -->
+                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    <!-- Toggle Password Icon Button -->
+                    <button class="password-toggle" type="button" id="toggle-password" aria-label="Tampilkan password">
+                        <svg id="eye-icon" class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <button class="submit-btn" type="submit">
+                Masuk ke Portal
+            </button>
+        </form>
+
+        <div class="divider">atau masuk dengan</div>
+
+        <button class="sso-btn" type="button" onclick="alert('Demo SSO TETI UGM')">
+            <svg class="sso-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            UGM Single Sign-On
+        </button>
+
+        <div class="card-footer">
+            <a class="footer-link" href="#" onclick="alert('Silakan hubungi admin IT TETI di admin@teti.ugm.ac.id')">Lupa Password?</a>
+            <a class="footer-link" href="#" onclick="alert('Panduan penggunaan portal dapat diakses di teti.ugm.ac.id/bantuan')">Bantuan</a>
+        </div>
+    </div>
+
+    <!-- Script for interactive elements -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const passwordInput = document.getElementById('password');
+            const toggleButton = document.getElementById('toggle-password');
+            const eyeIcon = document.getElementById('eye-icon');
+
+            toggleButton.addEventListener('click', () => {
+                const isPassword = passwordInput.getAttribute('type') === 'password';
+                passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+                toggleButton.setAttribute('aria-label', isPassword ? 'Sembunyikan password' : 'Tampilkan password');
+                
+                if (isPassword) {
+                    eyeIcon.innerHTML = `
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                        <line x1="1" y1="1" x2="23" y2="23"/>
+                    `;
+                } else {
+                    eyeIcon.innerHTML = `
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    `;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
